@@ -24,37 +24,44 @@ cd $Path                                                         #
 ### A variable is a unit of memory in which values are stored. 
 ### 1. Create a two int variables $i and $x and assign the value to 122 and 633 respectively.
 ## YOUR CODE HERE
-
+$i = 122
+$x = 633
 
 ### 2. Now, add $i and $x together and store the value in another variable $y. 
 ### Then output ("print") the value of $y to the console.
 ## YOUR CODE HERE
-
+$y = $i + $x
+Write-Output ($y)
 
 ### 3. Divide $y by $i and round the answer to the two closest decimal places and 
 ### store the value in variable $z. Then print value of $z to the console. 
 ### HINT: Do some research on how to round values in PowerShell online. 
 ### Lots of examples are available ;)
 ## YOUR CODE HERE
-
+$z = [Math]::Round(($y / $i), 2)
+Write-output ($z)
 
 ### 4. In PowerShell strings and number variables can added together. 
 ### Create a variable $str and set it to "The value of z is: " and 
 ### add $str and $z together. Then output $str to the console.
 ## YOUR CODE HERE
+$str = "The value of z is: "
+$str += $z.ToString()
 
+write-output ($str)
 
 #----------------------------------------------------------[Arrays]-------------------------------------------------------
 ### Arrays are powerfull datatype that can store a collection of items.
 ### 1. Create an array variable named $arr and set it to 
 ### the following collection of integers (10,20,30,40,50,60,70,80,90,100)
 ## YOUR CODE HERE
-
+$arr = @(10,20,30,40,50,60,70,80,90,100)
 
 ### 2. Create a new variable called $itemSum and store the sum of the 2nd and last item in $arr. 
 ### Print the resule to the console. (10,->20<-,30,40,50,60,70,80,90,->100<-)
 ## YOUR CODE HERE
-
+$itemSum = ($arr[1] + $arr[9])
+Write-Output ($itemSum)
 
 #----------------------------------------------------------[CMDLET]-------------------------------------------------------
 ### This section examines the use of CMDLETs to find information. 
@@ -67,32 +74,36 @@ cd $Path                                                         #
 ## HINT: 37 items will be returned. Use count attribute to verify size 
 ## (Example: $files1.count)
 ## YOUR CODE HERE
+$files1 = Get-Childitem -Path Assignments/Assignment1/Datasets -Recurse
 
+$files1.count
 
 ### 2. Create a variable called $files2 and assign it the output all ".csv" files 
 ### in "Datasets" using the cmdlet: Get-ChildItem
 ## HINT:  34 files returned
 ## YOUR CODE HERE
-
+$files2 = Get-ChildItem -Path Assignments/Assignment1/Datasets | Where-Object {$_. Extension -eq ".csv"}
 
 ### 3. Create a variable called $files3 and assign it the output all ".csv" files 
 ### larger than 50 KB (Length > 50KB) in "Datasets" using the cmdlet: Get-ChildItem
 ## HINT: 7 files returned. 
 ## YOUR CODE HERE
-
+$files3 = Get-ChildItem -Path Assignments/Assignment1/Datasets | Where-Object {$_. Extension -eq ".csv"} |
+  Where-Object {$_. Length > 50KB}
 
 ### 4.  Create a variable called $files4 and assign it the output all ".csv" files 
 ### that start with the letter "a" and larger than 50 KB (Length > 50KB) in 
 ### "Datasets" using the cmdlet: Get-ChildItem
 ## HINT: 2 files returned
 ## YOUR CODE HERE
-
+$files4 = Get-ChildItem -Path Assignments/Assignment1/Datasets | Where-Object {$_. Extension -eq ".csv"} |
+  Where-Object {$_. BaseName -eq "a"}| Where-Object {$_. Length > 50KB}
 
 ### 5. Now that the two files we were looking for are found and stored in $files4, 
 ## let's export them out to CSV file named findings.csv
 ## HINT: 1 CSV file should output to the current directory. 
 ## YOUR CODE HERE
-
+Export-Csv -Path .\findings.csv -Value $files4
 
 ### 6. Over 1000 CMDLETS are available in PowerShell, research and find 
 ### a CMDLET to that makes a web request for UNG's main website ung.edu.
@@ -101,6 +112,8 @@ cd $Path                                                         #
 ### Lastly, print the status code property to the console. Did it succeed?
 ### HINT: Status Code of 200 is Successful
 ## YOUR CODE HERE 
+$web = Invoke-WebRequest -Uri "https://ung.edu"
 
+Write-Host $web.StatusCode
 
 #----------------------------------------------------------[Complete]-------------------------------------------------------------
